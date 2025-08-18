@@ -1,0 +1,25 @@
+name: Dev Activity (Every 2 Days)
+
+on:
+  schedule:
+    - cron: "0 3 */2 * *"  # every 2 days at 11AM SG time
+  workflow_dispatch:
+
+jobs:
+  log_activity:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v3
+
+      - name: Set up Git identity
+        run: |
+          git config --global user.name "rooksic"
+          git config --global user.email "rooksic@gmail.com"
+
+      - name: Update activity log
+        run: |
+          echo "Ping: $(date)" >> activity.txt
+          git add activity.txt
+          git commit -m "Activity ping on $(date)"
+          git push
